@@ -40,16 +40,13 @@ public class Application {
         //проверка добавления employee
         Employee employee = new Employee("Илон", "Маск", "male", 25, 1);
         System.out.println("Сотрудник Илон Гендальфович Маск " + (employeeDAO.addEmployee(employee) ? "добавлен" : "не добавлен"));
-        //System.out.println(employeeDAO.getAllEmployee().toString());
 
         //проверка удаления employee
-        System.out.println("Сотрудника Илона Маскова удален " + (employeeDAO.deleteEmployee(13) ? "удален" : "не удален"));
-        //System.out.println(employeeDAO.getAllEmployee().toString());
+        System.out.println("Сотрудника Илон Масков " + (employeeDAO.deleteEmployee(13) ? "удален" : "не удален"));
 
         //проверка обновления employee
         System.out.println("Сотрудник с id = 1 обновлен до Илона Гендальфовича " +
                 ((employeeDAO.updateEmployee(1, employee)) ? "успешно" : "безуспешно"));
-        //System.out.println(employeeDAO.getAllEmployee().toString());
 
         employeeDAO.getAllEmployeeTable();
 

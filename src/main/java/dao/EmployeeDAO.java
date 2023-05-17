@@ -17,7 +17,7 @@ public interface EmployeeDAO {
 
     boolean deleteEmployee(Employee employee);
 
-    boolean addEmployee(String name, String surname, String email, String password, String role);
-
     boolean addEmployee(Employee employee);
+
+    boolean addEmployee(String firstName, String lastName, String gender, int age, int cityId);
 }

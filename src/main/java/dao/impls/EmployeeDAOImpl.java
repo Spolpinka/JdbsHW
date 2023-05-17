@@ -64,19 +64,44 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public void getAllEmployeeTable() {
+        final int width = 20;//ширина столбца
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee ORDER BY id")) {
             statement.getMaxRows();
 
             ResultSet resultSet = statement.executeQuery();
-            System.out.println("| id    | first_name    | @last_name    | @gender    | @age    | @city_id    |" );
+            System.out.println("| id   | @first_name        | @last_name         | @gender            " +
+                    "| @age               | @city_id            |");
             while (resultSet.next()) {
-                System.out.println("| " + resultSet.getInt("id") + "  | " +
-                        resultSet.getString("first_name") + "  | " +
-                        resultSet.getString("last_name") + "  | " +
-                        resultSet.getString("gender") + "  | " +
-                        resultSet.getInt("age") + "  | " +
-                        resultSet.getInt("city_id") + "  | ");
+                StringBuilder sb = new StringBuilder();
+                sb.append("|")
+                        .append(resultSet.getInt("id"))
+                        .append("    | ")
+                        .append(resultSet.getString("first_name"));
+                for (int i = 0; i < width - resultSet.getString("first_name").length() - 1; i++) {
+                    sb.append(" ");
+                }
+                sb.append("| ")
+                        .append(resultSet.getString("last_name"));
+                for (int i = 0; i < width - resultSet.getString("last_name").length() - 1; i++) {
+                    sb.append(" ");
+                }
+                sb.append("|").append(resultSet.getString("gender"));
+                for (int i = 0; i < width - resultSet.getString("gender").length() - 1; i++) {
+                    sb.append(" ");
+                }
+                sb.append("| ")
+                        .append(resultSet.getInt("age"));
+                for (int i = 0; i < width - resultSet.getString("age").length() - 1; i++) {
+                    sb.append(" ");
+                }
+                sb.append("| ")
+                        .append(resultSet.getInt("city_id"));
+                for (int i = 0; i < width - resultSet.getString("city_id").length() - 1; i++) {
+                    sb.append(" ");
+                }
+
+                System.out.println(sb);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -153,7 +178,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 
     @Override
-    public boolean addEmployee(String name, String surname, String email, String password, String role) {
+    public boolean addEmployee(String firstName, String lastName, String gender, int age, int cityId) {
 
 
         return false;
