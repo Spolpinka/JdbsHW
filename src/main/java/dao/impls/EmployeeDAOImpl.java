@@ -70,7 +70,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             statement.getMaxRows();
 
             ResultSet resultSet = statement.executeQuery();
-            System.out.println("| id   | @first_name        | @last_name         | @gender            " +
+            System.out.println("| id  | @first_name        | @last_name         | @gender           " +
                     "| @age               | @city_id            |");
             while (resultSet.next()) {
                 StringBuilder sb = new StringBuilder();
@@ -114,14 +114,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         try (final Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE employee " +
-                             "SET first_name=" + employee.getFirst_name() +
-                             ",last_name=" + employee.getLast_name() +
-                             ",gender=" + employee.getGender() +
-                             ",age=" + employee.getAge() +
-                             ",city_id=" + employee.getCity_id() +
-                             " WHERE id = (?)")) {
-            statement.setInt(1, employee.getId());
-            statement.executeUpdate();
+                             "SET first_name='" + employee.getFirst_name() +
+                             "', last_name='" + employee.getLast_name() +
+                             "' WHERE id = (?)")) {
+            statement.setInt(1, id);
+            statement.execute();
 
             return true;
         } catch (SQLException e) {
