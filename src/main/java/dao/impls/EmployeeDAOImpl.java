@@ -9,26 +9,25 @@ import java.util.List;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
-    private final String password = "421243266";
-    private final String user = "postgres";
-    private final String driver = "org.postgresql.Driver";
-    private final String url = "jdbc:postgresql://localhost:5432/skypro";
-
     //получаем сотрудника по id
     @Override
     public Employee getEmployee(int id) {
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee WHERE id = (?)")) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             Employee employee;
-            resultSet.next();
-            employee = new Employee(resultSet.getInt("id"),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getString("gender"),
-                    resultSet.getInt("age"),
-                    resultSet.getInt("city_id"));
+            if (resultSet != null) {
+                resultSet.next();
+                employee = new Employee(resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("gender"),
+                        resultSet.getInt("age"),
+                        resultSet.getInt("city_id"));
+            } else {
+                return null;
+            }
 
 
             return employee;
@@ -41,7 +40,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public List<Employee> getAllEmployee() {
         List<Employee> result = new ArrayList<>();
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee")) {
             statement.getMaxRows();
 
@@ -65,7 +64,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public void getAllEmployeeTable() {
         final int width = 20;//ширина столбца
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee ORDER BY id")) {
             statement.getMaxRows();
 
@@ -111,7 +110,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     //обновляем сотрудника в базе данных
     @Override
     public boolean updateEmployee(int id, Employee employee) {
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "UPDATE employee " +
                              "SET first_name='" + employee.getFirst_name() +
@@ -131,7 +130,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     @Override
     public boolean deleteEmployee(int id) {
 
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement("DELETE FROM employee WHERE id = (?)")) {
             statement.setInt(1, id);
             statement.executeUpdate();
@@ -155,7 +154,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     // добавляем сотрудника
     @Override
     public boolean addEmployee(Employee employee) {
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
+        try (final Connection connection = MyConnection.getConnection();
              PreparedStatement statement = connection.prepareStatement(
                      "INSERT INTO employee (first_name, last_name, gender, age, city_id) " +
                              "VALUES (?, ?, ?, ?, ?)")) {

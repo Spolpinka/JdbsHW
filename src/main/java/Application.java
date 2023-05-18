@@ -2,10 +2,7 @@ import dao.EmployeeDAO;
 import dao.impls.EmployeeDAOImpl;
 import model.Employee;
 
-import javax.sound.midi.Soundbank;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
