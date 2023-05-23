@@ -6,46 +6,35 @@ import java.sql.*;
 
 public class Application {
     public static void main(String[] args) {
-        final String password = "421243266";
-        final String user = "postgres";
-        final String url = "jdbc:postgresql://localhost:5432/skypro";
+
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
 
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee WHERE id = (?)"))
-        {
-            statement.setInt(1, 1);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                System.out.println("Имя :       " + resultSet.getString("first_name"));
-                System.out.println("Фамилия :   " + resultSet.getString("last_name"));
-                System.out.println("Пол :       " + resultSet.getString("gender"));
+        //проверка получения employee по id
+        System.out.println("Получаем сотрудника по индексу 2:  \n" + employeeDAO.findById(2));
 
-                System.out.println("Возраст :   " + resultSet.getInt("age"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        //сохраняем сотрудника
+        System.out.println("сохраняем сотрудника Илону Гендальфону _____________________________________");
+        Employee employee = new Employee("Илона", "Гендальфова", "female", 25, 1);
+        employeeDAO.save(employee);
+
+        //update сотрудника
+        System.out.println("Делаем апдейт того же сотрудника в Илона Маскова ___________________________________");
+        employee.setFirst_name("Илон");
+        employee.setLast_name("Масков");
+        employee.setGender("male");
+        employee.setAge(39);
+        employeeDAO.update(employee);
+
+        //удаляем сотрудника по ID, каждый раз новый...
+        System.out.println("Удаляемем сотрудника по индеклу 23 ________________________________________");
+        employeeDAO.delete(23);
+
+        //выводим всю базу
+        System.out.println("выводим всю базу_______________________________");
+        for (Employee empl : employeeDAO.findAll()) {
+            System.out.println(empl);
         }
 
-        //проверка получения employee по id
-        System.out.println("Получаем сотрудника по индексу 2:  \n" + employeeDAO.getEmployee(2));
-
-        //проверка получения всех employee
-        System.out.println("Получаем всех сотрудников:");
-        employeeDAO.getAllEmployeeTable();
-
-        //проверка добавления employee
-        Employee employee = new Employee("Илон", "Маск", "male", 25, 1);
-        System.out.println("Сотрудник Илон Гендальфович Маск " + (employeeDAO.addEmployee(employee) ? "добавлен" : "не добавлен"));
-
-        //проверка удаления employee
-        System.out.println("Сотрудника Илон Масков " + (employeeDAO.deleteEmployee(13) ? "удален" : "не удален"));
-
-        //проверка обновления employee
-        System.out.println("Сотрудник с id = 1 обновлен до Илона Гендальфовича " +
-                ((employeeDAO.updateEmployee(1, employee)) ? "успешно" : "безуспешно"));
-
-        employeeDAO.getAllEmployeeTable();
 
 
     }
