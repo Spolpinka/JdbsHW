@@ -34,15 +34,13 @@ public class CityDAOImpl implements CityDAO {
     }
 
     @Override
-    public City delete(int id) {
+    public void delete(int id) {
         try (Session session = HibernateEmployeeSessionFactoryUtils.getSessionFactory().openSession()) {
             session.beginTransaction();
-            City city = (City) session.createNativeQuery("SELECT * FROM city WHERE city_id = :id").getParameterValue(id);
             Query query = session.createNativeQuery("delete from city where city_id = :id");
             query.setParameter("id", id);
             query.executeUpdate();
             session.getTransaction().commit();
-            return city;
         }
     }
 

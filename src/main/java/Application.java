@@ -2,6 +2,7 @@ import dao.CityDAO;
 import dao.EmployeeDAO;
 import dao.impls.CityDAOImpl;
 import dao.impls.EmployeeDAOImpl;
+import model.City;
 import model.Employee;
 
 import java.sql.*;
@@ -19,10 +20,15 @@ public class Application {
         System.out.println("Получаем город по индексу 1:____________________" +
                 "  \n" + cityDAO.getCityById(1));
 
-        /*//сохраняем сотрудника
+        //сохраняем сотрудника
         System.out.println("сохраняем сотрудника Илону Гендальфону _____________________________________");
         Employee employee = new Employee("Илона", "Гендальфова", "female", 25, 1);
         employeeDAO.save(employee);
+
+        //сохраняем город
+        System.out.println("Сохраняем город ГКН _________________________");
+        City city = new City("NotExisted");
+        cityDAO.save(city);
 
         //update сотрудника
         System.out.println("Делаем апдейт того же сотрудника в Илона Маскова ___________________________________");
@@ -32,15 +38,26 @@ public class Application {
         employee.setAge(39);
         employeeDAO.update(employee);
 
-        //удаляем сотрудника по ID, каждый раз новый...
-        System.out.println("Удаляемем сотрудника по индеклу 23 ________________________________________");
-        employeeDAO.delete(23);*/
+        //update city
+        System.out.println("Делаем update того же city в Tbilisy __________________________________________");
+        city.setCity_name("Tbilisy");
+        cityDAO.update(city);
 
-        //выводим всю базу
+        //удаляем сотрудника по ID, каждый раз новый...
+        System.out.println("Удаляем сотрудника по индеклу 23 ________________________________________");
+        employeeDAO.delete(23);
+
+        //удалем город с индексом 21
+        System.out.println("Удаляем город с индексом 20 (только что добавленный - 21 и дальше) _________________________");
+        cityDAO.delete(20);
+
+
+        /*//выводим всю базу
         System.out.println("выводим всю базу_______________________________");
         for (Employee empl : employeeDAO.findAll()) {
             System.out.println(empl);
         }
+        */
 
 
 

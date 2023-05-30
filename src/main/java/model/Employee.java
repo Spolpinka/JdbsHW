@@ -1,5 +1,7 @@
 package model;
 
+import dao.CityDAO;
+import dao.impls.CityDAOImpl;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,10 @@ public class Employee {
     private int age;
     //private int city_id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id")
+
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "city_id", nullable = true)
     private City city;
 
 
@@ -31,7 +35,7 @@ public class Employee {
         this.last_name = last_name;
         this.gender = gender;
         this.age = age;
-        //this.city_id = city_id;
+        this.city = new CityDAOImpl().getCityById(city_id);
     }
 
     @Override

@@ -1,16 +1,12 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "city")
@@ -23,11 +19,19 @@ public class City {
     private String city_name;
 
     @OneToMany(mappedBy = "city",
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.REMOVE, orphanRemoval = true,
+            fetch = FetchType.EAGER)
     private List<Employee> employee;
 
     public City(String city_name) {
         this.city_name = city_name;
     }
 
+    @Override
+    public String toString() {
+        return "City{" +
+                "city_id=" + city_id +
+                ", city_name='" + city_name + '\'' +
+                '}';
+    }
 }
