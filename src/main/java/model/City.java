@@ -10,28 +10,30 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "city")
-@EqualsAndHashCode(of = "city_id")
+@EqualsAndHashCode(of = "id")
 public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int city_id;
+    @Column(name = "city_id")
+    private int id;
 
-    private String city_name;
+    @Column(name = "city_name")
+    private String cityName;
 
     @OneToMany(mappedBy = "city",
             cascade = CascadeType.REMOVE, orphanRemoval = true,
             fetch = FetchType.EAGER)
     private List<Employee> employee;
 
-    public City(String city_name) {
-        this.city_name = city_name;
+    public City(String cityName) {
+        this.cityName = cityName;
     }
 
     @Override
     public String toString() {
         return "City{" +
-                "city_id=" + city_id +
-                ", city_name='" + city_name + '\'' +
+                "city_id=" + id +
+                ", city_name='" + cityName + '\'' +
                 '}';
     }
 }

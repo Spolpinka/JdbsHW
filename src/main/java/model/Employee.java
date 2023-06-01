@@ -1,6 +1,5 @@
 package model;
 
-import dao.CityDAO;
 import dao.impls.CityDAOImpl;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,8 +16,11 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String first_name;
-    private String last_name;
+
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     private String gender;
     private int age;
     //private int city_id;
@@ -30,9 +32,9 @@ public class Employee {
     private City city;
 
 
-    public Employee(String first_name, String last_name, String gender, int age, int city_id) {
-        this.first_name = first_name;
-        this.last_name = last_name;
+    public Employee(String firstName, String lastName, String gender, int age, int city_id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.gender = gender;
         this.age = age;
         this.city = new CityDAOImpl().getCityById(city_id);
@@ -42,8 +44,8 @@ public class Employee {
     public String toString() {
         return "Сотрудник: " +
                 "id=" + id + "\n" +
-                "Имя - " + first_name + "\n" +
-                "Фамилия - " + last_name + "\n" +
+                "Имя - " + firstName + "\n" +
+                "Фамилия - " + lastName + "\n" +
                 "пол - " + gender + "\n" +
                 "возраст - " + age + "\n"
                 //+ "city_id=" + city_id

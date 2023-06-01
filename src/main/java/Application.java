@@ -5,8 +5,6 @@ import dao.impls.EmployeeDAOImpl;
 import model.City;
 import model.Employee;
 
-import java.sql.*;
-
 public class Application {
     public static void main(String[] args) {
 
@@ -32,15 +30,15 @@ public class Application {
 
         //update сотрудника
         System.out.println("Делаем апдейт того же сотрудника в Илона Маскова ___________________________________");
-        employee.setFirst_name("Илон");
-        employee.setLast_name("Масков");
+        employee.setFirstName("Илон");
+        employee.setLastName("Масков");
         employee.setGender("male");
         employee.setAge(39);
         employeeDAO.update(employee);
 
         //update city
         System.out.println("Делаем update того же city в Tbilisy __________________________________________");
-        city.setCity_name("Tbilisy");
+        city.setCityName("Tbilisy");
         cityDAO.update(city);
 
         //удаляем сотрудника по ID, каждый раз новый...
@@ -49,7 +47,7 @@ public class Application {
 
         //удалем город с индексом 21
         System.out.println("Удаляем город с индексом 20 (только что добавленный - 21 и дальше) _________________________");
-        cityDAO.delete(20);
+        cityDAO.delete(cityDAO.getCityById(20));
 
 
         /*//выводим всю базу
