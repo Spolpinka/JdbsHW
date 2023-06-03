@@ -1,51 +1,62 @@
+import dao.CityDAO;
 import dao.EmployeeDAO;
+import dao.impls.CityDAOImpl;
 import dao.impls.EmployeeDAOImpl;
+import model.City;
 import model.Employee;
-
-import java.sql.*;
 
 public class Application {
     public static void main(String[] args) {
-        final String password = "421243266";
-        final String user = "postgres";
-        final String url = "jdbc:postgresql://localhost:5432/skypro";
+
         EmployeeDAO employeeDAO = new EmployeeDAOImpl();
-
-        try (final Connection connection = DriverManager.getConnection(url, user, password);
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM employee WHERE id = (?)"))
-        {
-            statement.setInt(1, 1);
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                System.out.println("Имя :       " + resultSet.getString("first_name"));
-                System.out.println("Фамилия :   " + resultSet.getString("last_name"));
-                System.out.println("Пол :       " + resultSet.getString("gender"));
-
-                System.out.println("Возраст :   " + resultSet.getInt("age"));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        CityDAO cityDAO = new CityDAOImpl();
 
         //проверка получения employee по id
-        System.out.println("Получаем сотрудника по индексу 2:  \n" + employeeDAO.getEmployee(2));
+        System.out.println("Получаем сотрудника по индексу 2:____________________" +
+                "  \n" + employeeDAO.findById(2));
 
-        //проверка получения всех employee
-        System.out.println("Получаем всех сотрудников:");
-        employeeDAO.getAllEmployeeTable();
+        System.out.println("Получаем город по индексу 1:____________________" +
+                "  \n" + cityDAO.getCityById(1));
 
-        //проверка добавления employee
-        Employee employee = new Employee("Илон", "Маск", "male", 25, 1);
-        System.out.println("Сотрудник Илон Гендальфович Маск " + (employeeDAO.addEmployee(employee) ? "добавлен" : "не добавлен"));
+        //сохраняем сотрудника
+        System.out.println("сохраняем сотрудника Илону Гендальфону _____________________________________");
+        Employee employee = new Employee("Илона", "Гендальфова", "female", 25, 1);
+        employeeDAO.save(employee);
 
-        //проверка удаления employee
-        System.out.println("Сотрудника Илон Масков " + (employeeDAO.deleteEmployee(13) ? "удален" : "не удален"));
+        //сохраняем город
+        System.out.println("Сохраняем город ГКН _________________________");
+        City city = new City("NotExisted");
+        cityDAO.save(city);
 
-        //проверка обновления employee
-        System.out.println("Сотрудник с id = 1 обновлен до Илона Гендальфовича " +
-                ((employeeDAO.updateEmployee(1, employee)) ? "успешно" : "безуспешно"));
+        //update сотрудника
+        System.out.println("Делаем апдейт того же сотрудника в Илона Маскова ___________________________________");
+        employee.setFirstName("Илон");
+        employee.setLastName("Масков");
+        employee.setGender("male");
+        employee.setAge(39);
+        employeeDAO.update(employee);
 
-        employeeDAO.getAllEmployeeTable();
+        //update city
+        System.out.println("Делаем update того же city в Tbilisy __________________________________________");
+        city.setCityName("Tbilisy");
+        cityDAO.update(city);
+
+        //удаляем сотрудника по ID, каждый раз новый...
+        System.out.println("Удаляем сотрудника по индеклу 23 ________________________________________");
+        employeeDAO.delete(23);
+
+        //удалем город с индексом 21
+        System.out.println("Удаляем город с индексом 20 (только что добавленный - 21 и дальше) _________________________");
+        cityDAO.delete(cityDAO.getCityById(20));
+
+
+        /*//выводим всю базу
+        System.out.println("выводим всю базу_______________________________");
+        for (Employee empl : employeeDAO.findAll()) {
+            System.out.println(empl);
+        }
+        */
+
 
 
     }

@@ -5,19 +5,14 @@ import model.Employee;
 import java.util.List;
 
 public interface EmployeeDAO {
-    Employee getEmployee(int id);
 
-    List<Employee> getAllEmployee();
+    void save(Employee employee);
 
-    void getAllEmployeeTable();
+    Employee findById(int id);
 
-    boolean updateEmployee(int id, Employee employee);
+    void update(Employee employee);
 
-    boolean deleteEmployee(int id);
+    void delete(int id);
 
-    boolean deleteEmployee(Employee employee);
-
-    boolean addEmployee(Employee employee);
-
-    boolean addEmployee(String firstName, String lastName, String gender, int age, int cityId);
+    List<Employee> findAll();
 }
